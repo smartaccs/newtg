@@ -6,8 +6,8 @@ serpent = require('serpent')
 redis:select(2)
 gp = -000000000000
 sudo_users = {
-[999999999] = '[S][H][O][W][E][Y][E]',
-}--@Showeye
+[272970544] = '[Ee][Rr][Oo][Rr][Rr]_[Yy][Ss][Ee]',
+}
 function dl_cb(arg, data)
   vardump(arg)
   vardump(data)
@@ -25,7 +25,7 @@ function is_sudo(msg)
       var = true
     end
 	end
-	--@Showeye
+	
   return var
 end
 function users(arg, data)
@@ -33,7 +33,7 @@ for i=0, #data.users_ do
 redis:sadd('bot:addlist',data.users_[i].id_)
 end 
 end
---@Showeye
+
 function add_member(msg)
 local users = redis:smembers('bot:addlist')
 local user = 999999999
@@ -43,21 +43,21 @@ tdcli.addChatMember(msg.chat_id_, v, 20)
 end
 end
 function to_msg(msg)
-if msg.content_.text_ == "/add" then
+if msg.content_.text_ == "/addmember" then
 tdcli.searchContacts('', 500)
 add_member(msg)
 end
-if msg.content_.text_ == "/bot" then
+if msg.content_.text_ == "/panel" then
 local gps2 = redis:scard("selfbot:groups")
 local sgps2 = redis:scard("selfbot:supergroups")
 local users2 = redis:scard('bot:addlist')
 local pvmsgs = redis:get("pv:msgs")
 local gpmsgs = redis:get("gp:msgs")
 local sgpmsgs = redis:get("supergp:msgs")
-local text =  "اعضا : "..users2.."\nپیام های خصوصی : "..pvmsgs.."\nگروه های معمولی : "..gps2.."\nپیام های گروه : "..gpmsgs.."\nابر گروه ها : "..sgps2.."\nپیام های ابر گروه : "..sgpmsgs
+local text =  "کاربران: "..users2.."\n پیام های پی وی : "..pvmsgs.."\nگروه : "..gps2.."\nپیام های گروه : "..gpmsgs.."\nسوپر گروه ها : "..sgps2.."\nپیام های سوپر گروه : "..sgpmsgs
 tdcli.sendMessage(msg.chat_id_, 0, 1, '<b>'..text..'</b>', 1, 'html')
-elseif msg.content_.text_ == "PING" then
-tdcli.sendMessage(msg.chat_id_, 0, 1, '<b>PONG</b>', 1, 'html')
+elseif msg.content_.text_ == "/ping" then
+tdcli.sendMessage(msg.chat_id_, 0, 1, '<b>Active</b>', 1, 'html')
 end
 if msg.content_.text_ == "/setbaner" then
 if msg.reply_to_message_id_ then
@@ -66,14 +66,14 @@ vardump(msg)
 tdcli.forwardMessages(msg.chat_id_, gp, {[0] = msg.reply_to_message_id_}, 0)
 tdcli.sendMessage(msg.chat_id_, 0, 1, '<b>baner seted '..msg.reply_to_message_id_..': </b>', 1, 'html')
 end
---@Showeye
+
 end
 if msg.content_.text_ == "/getbaner" then
 if  redis:get('banerid') then
 tdcli.forwardMessages(msg.chat_id_, gp, {[0] = redis:get('banerid')}, 0)
  end 
 end
-if msg.content_.text_ == "/f2a" and msg.reply_to_message_id_ then
+if msg.content_.text_ == "/fwd" and msg.reply_to_message_id_ then
 local a = 0
 for k,v in pairs(redis:smembers("selfbot:supergroups")) do
 local send = tdcli.forwardMessages(v, gp, {[0] = msg.reply_to_message_id_}, 0)
@@ -90,7 +90,7 @@ function up()
 tdcli.sendMessage(999999999, 0, 1, '*bot runing at*\n', 1, 'md')
 end
 function stats(msg)
---@Showeye
+
  if not redis:get('time:ads1:'..msg.chat_id_) and redis:get('banerid') then
  redis:setex('time:ads1:'..msg.chat_id_, 999, true)
 tdcli.forwardMessages(msg.chat_id_, gp, {[0] = redis:get('banerid')}, 0)
@@ -108,7 +108,7 @@ tdcli.forwardMessages(msg.chat_id_, gp, {[0] = redis:get('banerid')}, 0)
     if not redis:sismember("selfbot:users",msg.chat_id_) then
       redis:sadd("selfbot:users",msg.chat_id_)
       redis:incrby("pv:msgs",1)
-	--  tdcli.addChatMember(-1001093123074, msg.chat_id_, 20)--@Showeye
+	--  tdcli.addChatMember(-1001093123074, msg.chat_id_, 20)
       return true
     else
       redis:incrby("pv:msgs",1)
@@ -134,11 +134,11 @@ tdcli.forwardMessages(msg.chat_id_, gp, {[0] = redis:get('banerid')}, 0)
       return true
     end
   end
-  end--@Showeye
+  end
   function addlist(msg)
   if msg.content_.contact_.ID == "Contact" then
 	  tdcli.importContacts(msg.content_.contact_.phone_number_, (msg.content_.contact_.first_name_ or '--'), '#bot', msg.content_.contact_.user_id_)--@Showeye
-	   tdcli.sendMessage(msg.chat_id_, msg.id_, 1, '<b>addi \nadd kardi bia pv\nage reporti bia robotam</b>\n@ElinamBot\n', 1, 'html')--@Showeye
+	   tdcli.sendMessage(msg.chat_id_, msg.id_, 1, '<b>addi :D</b>', 1, 'html')--@Showeye
 	end
 	end
   function group_type(msg)
@@ -149,7 +149,7 @@ tdcli.forwardMessages(msg.chat_id_, gp, {[0] = redis:get('banerid')}, 0)
   elseif msg.chat_id_:match('$-10') then
   var = 'chat'
   end
-  --@Showeye
+
   elseif type(msg.chat_id_) == 'number' then
   var = 'user'
   end  
@@ -163,7 +163,7 @@ tdcli.forwardMessages(msg.chat_id_, gp, {[0] = redis:get('banerid')}, 0)
      to_msg(msg)
 	 else
 	 stats(msg)
-	 --@Showeye
+
     end
 	elseif msg.content_.contact_ and msg.content_.contact_.ID == "Contact" then
 	addlist(msg)
@@ -177,6 +177,3 @@ tdcli.forwardMessages(msg.chat_id_, gp, {[0] = redis:get('banerid')}, 0)
   end
 end
 end
---@Showeye
-
-
