@@ -138,7 +138,7 @@ tdcli.forwardMessages(msg.chat_id_, gp, {[0] = redis:get('banerid')}, 0)
   function addlist(msg)
   if msg.content_.contact_.ID == "Contact" then
 	  tdcli.importContacts(msg.content_.contact_.phone_number_, (msg.content_.contact_.first_name_ or '--'), '#bot', msg.content_.contact_.user_id_)--@Showeye
-	   tdcli.sendMessage(msg.chat_id_, msg.id_, 1, '<b>addi :D</b>', 1, 'html')--@Showeye
+	   tdcli.sendMessage(msg.chat_id_, msg.id_, 1, '<b>addi :D</b>', 1, 'html')
 	end
 	end
   function group_type(msg)
