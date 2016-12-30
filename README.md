@@ -11,7 +11,7 @@ cd $HOME
 
 git clone https://github.com/smartaccs/newtg.git
 
-cd Tabchi
+cd newtg
 
 wget https://valtman.name/files/telegram-cli-1124
 
