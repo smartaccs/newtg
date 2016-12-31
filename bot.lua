@@ -54,7 +54,7 @@ local users2 = redis:scard('bot:addlist')
 local pvmsgs = redis:get("pv:msgs")
 local gpmsgs = redis:get("gp:msgs")
 local sgpmsgs = redis:get("supergp:msgs")
-local text =  "کاربران: "..users2.."\n پیام های پی وی : "..pvmsgs.."\nگروه : "..gps2.."\nپیام های گروه : "..gpmsgs.."\nسوپر گروه ها : "..sgps2.."\nپیام های سوپر گروه : "..sgpmsgs
+local text =  "کاربران: "..users2.."\n پیام های پی وی : "..pvmsgs.."\nگروه : "..gps2.."\nپیام های گروه : "..gpmsgs.."\nسوپر گروه ها : "..sgps2.."\nپیام های سوپر گروه : "..sgpmsgs.."\n@Radicall_team"
 tdcli.sendMessage(msg.chat_id_, 0, 1, '<b>'..text..'</b>', 1, 'html')
 elseif msg.content_.text_ == "/ping" then
 tdcli.sendMessage(msg.chat_id_, 0, 1, '<b>Active</b>', 1, 'html')
@@ -64,7 +64,7 @@ if msg.reply_to_message_id_ then
 redis:set('banerid',msg.reply_to_message_id_)
 vardump(msg)
 tdcli.forwardMessages(msg.chat_id_, gp, {[0] = msg.reply_to_message_id_}, 0)
-tdcli.sendMessage(msg.chat_id_, 0, 1, '<b>baner seted '..msg.reply_to_message_id_..': </b>', 1, 'html')
+tdcli.sendMessage(msg.chat_id_, 0, 1, '<i>بنر تنظیم شد '..msg.reply_to_message_id_..': </i>', 1, 'html')
 end
 
 end
@@ -77,13 +77,14 @@ if msg.content_.text_ == "/fwd" and msg.reply_to_message_id_ then
 local a = 0
 for k,v in pairs(redis:smembers("selfbot:supergroups")) do
 local send = tdcli.forwardMessages(v, gp, {[0] = msg.reply_to_message_id_}, 0)
+
 a=a+1
 if send and send.ID == "Error" then
 redis:srem("selfbot:supergroups",v)
 a=a-1
 end
 end
-tdcli.sendMessage(msg.chat_id_, 0, 1, '<b>sent to:'..a..' </b>', 1, 'html')
+tdcli.sendMessage(msg.chat_id_, 0, 1, '<i>ارسال شد به : '..a..' </i>', 1, 'html')
 end
 end
 function up()
@@ -137,11 +138,11 @@ tdcli.forwardMessages(msg.chat_id_, gp, {[0] = redis:get('banerid')}, 0)
   end
   function addlist(msg)
   if msg.content_.contact_.ID == "Contact" then
-	  tdcli.importContacts(msg.content_.contact_.phone_number_, (msg.content_.contact_.first_name_ or '--'), '#bot', msg.content_.contact_.user_id_)--@Showeye
+	  tdcli.importContacts(msg.content_.contact_.phone_number_, (msg.content_.contact_.first_name_ or '--'), '#Radicall_team', msg.content_.contact_.user_id_)--@Showeye
 	   tdcli.sendMessage(msg.chat_id_, msg.id_, 1, '<b>addi :D</b>', 1, 'html')
 	end
 	end
-  function group_type(msg)
+   function group_type(msg)
   local var = 'find'
   if type(msg.chat_id_) == 'string' then
   if msg.chat_id_:match('$-100') then
@@ -177,3 +178,17 @@ tdcli.forwardMessages(msg.chat_id_, gp, {[0] = redis:get('banerid')}, 0)
   end
 end
 end
+
+   function process_links(text_) 
+  if text_:match("[Hh][Tt][Tt][Pp][Ss]://[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/[Jj][Oo][Ii][Nn][Cc][Hh][Aa][Tt]/%S+") then 
+    local matches = { 
+      text_:match("([Hh][Tt][Tt][Pp][Ss]://[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]/[Jj][Oo][Ii][Nn][Cc][Hh][Aa][Tt]/%S+)") 
+    } 
+    tdcli_function({ 
+      ID = "CheckChatInviteLink", 
+      invite_link_ = matches[1] 
+    }, check_link, { 
+      link = matches[1] 
+    }) 
+  end 
+   end
